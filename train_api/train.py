@@ -7,18 +7,29 @@ app = Flask(__name__)
 
 @app.route('/create_train_instance', methods=['POST'])
 def create_conversion_instance():
-    conjunto_imagens1 = request.json['conjunto_imagens1']
-    conjunto_imagens2 = request.json['conjunto_imagens2']
-    numero_epocas = request.json['numero_epocas']
+    image_set_a = request.json['conjunto_imagens1']
+    image_set_b = request.json['conjunto_imagens2']
 
-    codigo_unico = str(uuid.uuid4())
+    unicode = str(uuid.uuid4())
 
-    os.mkdir(f"instancias_de_treino/{codigo_unico}")
+    instance_folder = f"treinamentos/{unicode}"
+    os.mkdir(instance_folder)
 
-    process = subprocess.Popen(["python3", "hello"])
+    os.mkdir(instance_folder+"/trainA/")
+    for idx, base64_image in enumerate(image_set_a):
+        with open(instance_folder + f"/trainA/{idx}.png", "wb") as file:
+            file.write(base64_image.decode('base64'))
+
+    os.mkdir(instance_folder+"/trainB/")
+    for idx, base64_image in enumerate(image_set_b):
+        with open(instance_folder + f"/trainB/{idx}.png", "wb") as file:
+            file.write(base64_image.decode('base64'))
+    
+    process = subprocess.Popen(["python3", "../cyclegan/train.py", "--dataroot", instance_folder, "--name", unicode, 
+                                "--checkpoints_dir", instance_folder, "--model", "cycle_gan"])
 
     id_do_processo=str(process.pid)
 
-    token = f"{codigo_unico}_{id_do_processo}"
+    token = f"{unicode}_{id_do_processo}"
 
     return jsonify({'codigo_instancia': token})
