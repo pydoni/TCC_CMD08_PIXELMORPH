@@ -41,7 +41,7 @@ if __name__ == '__main__':
             model.save_networks(epoch)
     
     files = glob(save_folder+"*latest*pth")
-    with zipfile.ZipFile(save_folder+f"{save_folder.split('/')[1]}.zip", 'w') as zipMe:        
+    with zipfile.ZipFile(save_folder+f"pesos.zip", 'w') as zipMe:        
         for file in files:
             zipMe.write(file, compress_type=zipfile.ZIP_DEFLATED)
             os.remove(file)

@@ -30,7 +30,7 @@ if __name__ == '__main__':
             save_image(img, save_path, 1)
     
     files = glob(save_folder+"*png")
-    with zipfile.ZipFile(save_folder+f"{save_folder.split('/')[1]}.zip", 'w') as zipMe:        
+    with zipfile.ZipFile(save_folder+f"imagens.zip", 'w') as zipMe:        
         for file in files:
             zipMe.write(file, compress_type=zipfile.ZIP_DEFLATED)
             os.remove(file)
