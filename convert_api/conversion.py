@@ -13,8 +13,10 @@ def create_conversion_instance():
     codigo_unico = str(uuid.uuid4())
 
     os.mkdir(f"instancias_de_treino/{codigo_unico}")
-
-    process = subprocess.Popen(["python3", "hello"])
+    # python3 convert.py --dataroot datasets/horse2zebra/testA --checkpoints_dir conversao --name 1111 --model test
+    #  --no_dropout --num_thread 0 --batch_size 1 --serial_batches --no_flip --results_dir conversao/2104194/
+    process = subprocess.Popen(["python3", "../cyclegan/test.py", "--dataroot", f"../instancias_de_conversão/{codigo_unico}/testA"
+                                "--name ", "", "--model", "test", "--no_dropout"])
 
     id_do_processo=str(process.pid)
 
